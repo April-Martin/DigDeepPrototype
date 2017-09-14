@@ -87,7 +87,8 @@ public class RootSystem : MonoBehaviour {
                         _roots[i].AddPotentialPoint(_selectedPoint);
                     }   
                 }
-            }            
+            }
+            _selectedPoint = 0;
         }
 
         if (Input.GetKeyDown(KeyCode.RightArrow))
