@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameConstants {
 
-    public static float UNIT_LENGTH = 1;
+    public static float UNIT_LENGTH = .5f;
     public static int DOTS_WIDE = 30;
     public static int DOTS_HIGH = 15;
     public static float DOT_DELTA_X = UNIT_LENGTH;

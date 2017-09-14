@@ -21,7 +21,7 @@ public class RootPath : MonoBehaviour {
 	
 	public void SetRootPoint( Vector3 point )
     {
-        _lr.numPositions = 1;
+        _lr.positionCount = 1;
         _lr.SetPosition( 0, point );
         _endPoint = point;
     }
@@ -48,8 +48,8 @@ public class RootPath : MonoBehaviour {
     public void AddPointAtAngle( int degrees )
     {
         Vector3 newPoint = GetPointAtAngle(degrees);
-        _lr.numPositions++;
-        _lr.SetPosition( _lr.numPositions - 1, newPoint);
+        _lr.positionCount++;
+        _lr.SetPosition( _lr.positionCount - 1, newPoint);
 
         _endPoint = newPoint;
         _lastAngle = degrees;
