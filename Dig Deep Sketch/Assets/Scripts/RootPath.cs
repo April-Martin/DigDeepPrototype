@@ -6,8 +6,8 @@ using UnityEngine;
 public class RootPath : MonoBehaviour {
 
     private LineRenderer _lr;
-    private Vector3 _endPoint;
-    private int _lastAngle;
+    public Vector3 _endPoint { get; private set; }
+    public int _lastAngle { get; private set; }
 
     private Vector3[] _potentialPoints;
 
@@ -69,12 +69,33 @@ public class RootPath : MonoBehaviour {
             AddPointAtAngle((_lastAngle - 60) % 360);
     }
 
+    public void AddAllPoints(Vector3[] newPoints, int lastAngle)
+    {
+        if (newPoints != null)
+        {
+            _lr.positionCount = newPoints.Length;
+
+            _lr.SetPositions(newPoints);
+
+            _endPoint = _lr.GetPosition(_lr.positionCount - 1);
+            _lastAngle = lastAngle;
+        }
+        
+    }
+
     public Vector3 GetPointAtAngle( int degrees )
     {
         Vector3 newPoint = _endPoint;
         newPoint.x += Mathf.Cos(rad(degrees)) * GameConstants.UNIT_LENGTH;
         newPoint.y += Mathf.Sin(rad(degrees)) * GameConstants.UNIT_LENGTH;
         return newPoint;
+    }
+
+    public Vector3[] GetLRPositions ()
+    {
+        Vector3[] positions = new Vector3[_lr.positionCount];
+        _lr.GetPositions(positions);
+        return positions;
     }
 
     private float rad( int degrees )

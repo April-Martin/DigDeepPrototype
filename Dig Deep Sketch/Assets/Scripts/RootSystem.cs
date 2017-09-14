@@ -6,20 +6,26 @@ public class RootSystem : MonoBehaviour {
 
     public RootPath Root;
     public SpriteRenderer Highlight;
+    public SpriteRenderer BranchHighlight;
 
     private int _endNum;
     private List<RootPath> _roots;
     private SpriteRenderer _highlight;
+    private SpriteRenderer _branchHighlight;
     private int _selectedRoot;
     private int _selectedPoint;
 
-	// Use this for initialization
-	void Start () {
+    private bool branch;
+    private int _selectedBranchPosition;
+
+    // Use this for initialization
+    void Start () {
 
         _roots = new List<RootPath>();
         _selectedRoot = 0;
         _selectedPoint = 0;
         _endNum = 2;
+        branch = false;
 
         for (int i = 0; i < _endNum; i++ )
         {
@@ -33,6 +39,9 @@ public class RootSystem : MonoBehaviour {
             _highlight.enabled = false;
         }
 
+        _branchHighlight = GameObject.Instantiate(BranchHighlight);
+        _branchHighlight.enabled = false;
+
         _roots[0].AddPointAtAngle(240);
         _roots[1].AddPointAtAngle(300);
 
@@ -43,16 +52,40 @@ public class RootSystem : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Space))
         {
             _highlight.enabled = false;
+            _branchHighlight.enabled = false;
 
             for (int i=0; i<_roots.Count; i++)
             {
                 if ( i != _selectedRoot)
                 {
+                    
                     _roots[i].ExtendRoot();
                 }
                 else
                 {
-                    _roots[i].AddPotentialPoint(_selectedPoint);
+                    if (branch && _selectedPoint != _selectedBranchPosition)
+                    {
+                        Vector3[] oldRootPath = _roots[i].GetLRPositions();
+                        int _lastOldRootAngle = _roots[i]._lastAngle;
+                        RootPath firstRootBranch = GameObject.Instantiate(Root);
+                        RootPath secondRootBranch = GameObject.Instantiate(Root);
+                        firstRootBranch.SetRootPoint(Vector3.zero);
+                        secondRootBranch.SetRootPoint(Vector3.zero);
+                        firstRootBranch.AddAllPoints(oldRootPath, _lastOldRootAngle);
+                        secondRootBranch.AddAllPoints(oldRootPath, _lastOldRootAngle);
+
+                        firstRootBranch.AddPotentialPoint(_selectedPoint);
+                        secondRootBranch.AddPotentialPoint(_selectedBranchPosition);
+
+                        _roots[i] = firstRootBranch;
+                        _roots.Add(secondRootBranch);
+
+                        branch = false;
+                    }
+                    else
+                    {
+                        _roots[i].AddPotentialPoint(_selectedPoint);
+                    }   
                 }
             }            
         }
@@ -60,6 +93,8 @@ public class RootSystem : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             _roots[_selectedRoot].OnRootDeselected();
+            _branchHighlight.enabled = false;
+            branch = false;
 
             _selectedRoot++;
             if (_selectedRoot >= _roots.Count)
@@ -74,6 +109,8 @@ public class RootSystem : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             _roots[_selectedRoot].OnRootDeselected();
+            _branchHighlight.enabled = false;
+            branch = false;
 
             _selectedRoot--;
             if (_selectedRoot < 0)
@@ -90,7 +127,13 @@ public class RootSystem : MonoBehaviour {
             _selectedPoint = (_selectedPoint + 1) % 3;
             HighlightSelectedPoint(_roots[_selectedRoot].GetPotentialPoints());
         }
-        
+
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            branch = true;
+            _selectedBranchPosition = _selectedPoint;
+            HighlightSelectedBranchPoint(_roots[_selectedRoot].GetPotentialPoints());
+        }
 	}
 
     private void HighlightSelectedPoint( Vector3[] points )
@@ -100,4 +143,10 @@ public class RootSystem : MonoBehaviour {
         _highlight.enabled = true;
     }
 
+    private void HighlightSelectedBranchPoint(Vector3[] points)
+    {
+
+        _branchHighlight.transform.position = points[_selectedPoint];
+        _branchHighlight.enabled = true;
+    }
 }
