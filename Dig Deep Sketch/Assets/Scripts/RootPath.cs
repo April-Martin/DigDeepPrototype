@@ -66,8 +66,8 @@ public class RootPath : MonoBehaviour {
             points[1] = GetPointAtAngle((_lastAngle - 120) % 360);
             for (int i = 0; i < 2; i++ )
             {
-                if (CheckForObstacles(_potentialPoints[i]).collider == null)
-                    clearPaths.Add(_potentialPoints[i]);
+                if (CheckForObstacles(points[i]).collider == null)
+                    clearPaths.Add(points[i]);
             }
             if ( clearPaths.Count > 0)
                 AddPoint(clearPaths[Random.Range(0, clearPaths.Count)]);
