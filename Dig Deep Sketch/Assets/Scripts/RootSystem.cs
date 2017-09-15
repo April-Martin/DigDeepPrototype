@@ -66,7 +66,7 @@ public class RootSystem : MonoBehaviour {
                     if (branch && _selectedPoint != _selectedBranchPosition)
                     {
                         Vector3[] oldRootPath = _roots[i].GetLRPositions();
-                        int _lastOldRootAngle = _roots[i]._lastAngle;
+                        float _lastOldRootAngle = _roots[i]._lastAngle;
                         RootPath firstRootBranch = GameObject.Instantiate(Root);
                         RootPath secondRootBranch = GameObject.Instantiate(Root);
                         firstRootBranch.SetRootPoint(Vector3.zero);
