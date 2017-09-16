@@ -10,7 +10,7 @@ public class RootSystem : MonoBehaviour {
 
     private int _endNum;
     private List<RootPath> _roots;
-    private SpriteRenderer _highlight;
+    private SpriteRenderer[] _highlights;
     private SpriteRenderer _branchHighlight;
     private int _selectedRoot;
     private int _selectedPoint;
@@ -22,6 +22,7 @@ public class RootSystem : MonoBehaviour {
     void Start () {
 
         _roots = new List<RootPath>();
+        _highlights = new SpriteRenderer[3];
         _selectedRoot = 0;
         _selectedPoint = 0;
         _endNum = 2;
@@ -31,12 +32,13 @@ public class RootSystem : MonoBehaviour {
         {
             _roots.Add(GameObject.Instantiate(Root));
             _roots[i].SetRootPoint(Vector3.zero);
+            _roots[i].rootSys = this;
         }
 
         for (int i = 0; i < 3; i++)
         {
-            _highlight = GameObject.Instantiate(Highlight);
-            _highlight.enabled = false;
+            _highlights[i] = GameObject.Instantiate(Highlight);
+            _highlights[i].enabled = false;
         }
 
         _branchHighlight = GameObject.Instantiate(BranchHighlight);
@@ -51,7 +53,7 @@ public class RootSystem : MonoBehaviour {
 	void Update () {
 		if (Input.GetKeyDown(KeyCode.Space))
         {
-            _highlight.enabled = false;
+            HideHighlights();
             _branchHighlight.enabled = false;
 
             for (int i=0; i<_roots.Count; i++)
@@ -137,11 +139,29 @@ public class RootSystem : MonoBehaviour {
         }
 	}
 
+    public void HideHighlights()
+    {
+        foreach ( SpriteRenderer h in _highlights )
+        {
+            h.enabled = false;
+        }
+    }
+
+    public void HighlightPoints( Vector3[] points )
+    {
+        HideHighlights();
+        for ( int i=0; i< points.Length; i++ )
+        {
+            _highlights[i].transform.position = points[i];
+            _highlights[i].enabled = true;
+        }
+    }
+
     private void HighlightSelectedPoint( Vector3[] points )
     {
-
-        _highlight.transform.position = points[_selectedPoint];
-        _highlight.enabled = true;
+        HideHighlights();
+        _highlights[0].transform.position = points[_selectedPoint];
+        _highlights[0].enabled = true;
     }
 
     private void HighlightSelectedBranchPoint(Vector3[] points)
