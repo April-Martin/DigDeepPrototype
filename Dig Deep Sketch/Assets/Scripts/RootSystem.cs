@@ -10,6 +10,7 @@ public class RootSystem : MonoBehaviour {
 
     private int _endNum;
     private List<RootPath> _roots;
+    private List<RootPath> _activeRoots;
     private SpriteRenderer[] _highlights;
     private SpriteRenderer _branchHighlight;
     private int _selectedRoot;
@@ -22,6 +23,7 @@ public class RootSystem : MonoBehaviour {
     void Start () {
 
         _roots = new List<RootPath>();
+        _activeRoots = new List<RootPath>();
         _highlights = new SpriteRenderer[3];
         _selectedRoot = 0;
         _selectedPoint = 0;
@@ -76,8 +78,15 @@ public class RootSystem : MonoBehaviour {
                         firstRootBranch.AddAllPoints(oldRootPath, _lastOldRootAngle);
                         secondRootBranch.AddAllPoints(oldRootPath, _lastOldRootAngle);
 
+                        Vector3[] firstRootPath = firstRootBranch.GetLRPositions();
+                        Vector3[] secondRootPath = firstRootBranch.GetLRPositions();
+
                         firstRootBranch.AddPotentialPoint(_selectedPoint);
                         secondRootBranch.AddPotentialPoint(_selectedBranchPosition);
+
+                        firstRootPath = firstRootBranch.GetLRPositions();
+                        secondRootPath = firstRootBranch.GetLRPositions();
+ 
 
                         _roots[i] = firstRootBranch;
                         _roots.Add(secondRootBranch);
@@ -169,5 +178,21 @@ public class RootSystem : MonoBehaviour {
 
         _branchHighlight.transform.position = points[_selectedPoint];
         _branchHighlight.enabled = true;
+    }
+
+    public void MarkRootActive( RootPath root )
+    {
+        _activeRoots.Add(root);
+    }
+    
+    public void GrowInactiveRoots()
+    {
+        Debug.Log("Hi!");
+        foreach ( RootPath root in _roots )
+        {
+            if ( !_activeRoots.Contains ( root) )
+                root.ExtendRoot();
+        }
+        _activeRoots.Clear();
     }
 }

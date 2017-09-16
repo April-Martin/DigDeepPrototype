@@ -4,8 +4,8 @@ using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
 public class RootPath : MonoBehaviour {
-
     public RootSystem rootSys { get; set; }
+    private RoundTracker _roundTracker;
     private LineRenderer _lr;
 	private CircleCollider2D _cc;
     public Vector3 _endPoint { get; private set; }
@@ -16,6 +16,7 @@ public class RootPath : MonoBehaviour {
 	// Use this for initialization
     void Awake()
     {
+        _roundTracker = GameObject.Find("MainGame").GetComponent<RoundTracker>();
         _cc = gameObject.AddComponent<CircleCollider2D>();
         _cc.radius = .2f;
         _lr = GetComponent<LineRenderer>();
@@ -31,15 +32,19 @@ public class RootPath : MonoBehaviour {
 
 			if (Vector2.Distance (_mousePos, _potentialPoints [0]) < .1f) {
 				ExtendRoot ();
+                rootSys.MarkRootActive( this );
                 rootSys.HighlightPoints(_potentialPoints);
+                _roundTracker.RegisterMove();
 			} else if (Vector2.Distance (_mousePos, _potentialPoints [1]) < .1f) {
 				_lastAngle = _lastAngle + 60;
 				ExtendRoot ();
                 rootSys.HighlightPoints(_potentialPoints);
+                _roundTracker.RegisterMove();
 			} else if (Vector2.Distance (_mousePos, _potentialPoints [2]) < .1f) {
 				_lastAngle = _lastAngle - 60;
 				ExtendRoot ();
                 rootSys.HighlightPoints(_potentialPoints);
+                _roundTracker.RegisterMove();
 			}
 		}
 		if (_selected && !Input.GetMouseButton(0))
@@ -173,8 +178,11 @@ public class RootPath : MonoBehaviour {
 
             _endPoint = _lr.GetPosition(_lr.positionCount - 1);
             _lastAngle = lastAngle;
+
+            _potentialPoints[0] = GetPointAtAngle( _lastAngle );
+            _potentialPoints[1] = GetPointAtAngle((_lastAngle + 60) % 360);
+            _potentialPoints[2] = GetPointAtAngle((_lastAngle - 60) % 360);
         }
-        
     }
 
     public Vector3 GetPointAtAngle( float degrees )
