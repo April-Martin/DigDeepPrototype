@@ -6,23 +6,58 @@ using UnityEngine;
 public class RootPath : MonoBehaviour {
 
     private LineRenderer _lr;
+	private CircleCollider2D _cc;
     public Vector3 _endPoint { get; private set; }
     public float _lastAngle { get; private set; }
-
+	private bool _selected;
     private Vector3[] _potentialPoints;
 
 	// Use this for initialization
 	void Awake () 
     {
+		_cc = gameObject.AddComponent<CircleCollider2D> ();
+		_cc.radius = .2f;
         _lr = GetComponent<LineRenderer>();
         _lr.startWidth = .2f;
         _potentialPoints = new Vector3[3];
 	}
-	
+
+	void Update()
+	{
+		if (_selected && Input.GetMouseButton(0)) {
+
+			Vector3 _mousePos = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y, 0);
+
+
+			if (Vector2.Distance (_mousePos, _potentialPoints [0]) < .1f) {
+				ExtendRoot ();
+				GetPotentialPoints ();
+			} else if (Vector2.Distance (_mousePos, _potentialPoints [1]) < .1f) {
+				_lastAngle = _lastAngle + 60;
+				ExtendRoot ();
+				GetPotentialPoints ();
+			} else if (Vector2.Distance (_mousePos, _potentialPoints [2]) < .1f) {
+				_lastAngle = _lastAngle - 60;
+				ExtendRoot ();
+				GetPotentialPoints ();
+			}
+		}
+		if (_selected && !Input.GetMouseButton(0))
+			_selected = false;
+	}
+
+	void OnMouseDown()
+	{
+		_selected = true;
+		GetPotentialPoints ();
+	}
+
 	public void SetRootPoint( Vector3 point )
     {
+		
         _lr.positionCount = 1;
         _lr.SetPosition( 0, point );
+		transform.position = new Vector3 (_lr.GetPosition(0).x, _lr.GetPosition(0).y, 0);
         _endPoint = point;
     }
 
@@ -102,6 +137,7 @@ public class RootPath : MonoBehaviour {
             Vector3 newPoint = GetPointAtAngle(degrees);
             _lr.positionCount++;
             _lr.SetPosition(_lr.positionCount - 1, newPoint);
+			_cc.offset = (_lr.GetPosition (_lr.positionCount -1) - _lr.GetPosition (0));
 
             _endPoint = newPoint;
             _lastAngle = degrees;
