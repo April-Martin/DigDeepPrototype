@@ -65,8 +65,8 @@ public class RootPath : MonoBehaviour {
                 if (Vector2.Distance(_mousePos, _potentialPoints[1]) < .1f)
                 {
                     _branchLastAngle = _lastAngle + 60;
-                    ExtendRoot();
                     rootSys.CreateNewBranch(this);
+                    ExtendRoot();
                     rootSys.HighlightPoints(_potentialPoints);
                     _roundTracker.RegisterMove();
                     _branching = false;
@@ -74,8 +74,8 @@ public class RootPath : MonoBehaviour {
                 else if (Vector2.Distance(_mousePos, _potentialPoints[2]) < .1f)
                 {
                     _branchLastAngle = _lastAngle - 60;
-                    ExtendRoot();
                     rootSys.CreateNewBranch(this);
+                    ExtendRoot();
                     rootSys.HighlightPoints(_potentialPoints);
                     _roundTracker.RegisterMove();
                     _branching = false;
