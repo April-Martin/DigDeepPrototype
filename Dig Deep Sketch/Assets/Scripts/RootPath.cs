@@ -10,7 +10,10 @@ public class RootPath : MonoBehaviour {
 	private CircleCollider2D _cc;
     public Vector3 _endPoint { get; private set; }
     public float _lastAngle { get; private set; }
-	private bool _selected;
+    public float _branchLastAngle { get; private set; }
+    public bool _branching { get; private set; }
+
+    private bool _selected;
     private Vector3[] _potentialPoints;
 
 	// Use this for initialization
@@ -22,46 +25,100 @@ public class RootPath : MonoBehaviour {
         _lr = GetComponent<LineRenderer>();
         _lr.startWidth = .2f;
         _potentialPoints = new Vector3[3];
+
+        
     }
 
 	void Update()
 	{
-		if (_selected && Input.GetMouseButton(0)) {
+        if (_selected)
+        {
+            Vector3 _mousePos = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y, 0);
 
-			Vector3 _mousePos = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y, 0);
+            if (Input.GetMouseButton(0))
+            {
 
-			if (Vector2.Distance (_mousePos, _potentialPoints [0]) < .1f) {
-				ExtendRoot ();
-                rootSys.MarkRootActive( this );
-                rootSys.HighlightPoints(_potentialPoints);
-                _roundTracker.RegisterMove();
-			} else if (Vector2.Distance (_mousePos, _potentialPoints [1]) < .1f) {
-				_lastAngle = _lastAngle + 60;
-				ExtendRoot ();
-                rootSys.HighlightPoints(_potentialPoints);
-                _roundTracker.RegisterMove();
-			} else if (Vector2.Distance (_mousePos, _potentialPoints [2]) < .1f) {
-				_lastAngle = _lastAngle - 60;
-				ExtendRoot ();
-                rootSys.HighlightPoints(_potentialPoints);
-                _roundTracker.RegisterMove();
-			}
-		}
-		if (_selected && !Input.GetMouseButton(0))
+                if (Vector2.Distance(_mousePos, _potentialPoints[0]) < .1f)
+                {
+                    ExtendRoot();
+                    rootSys.MarkRootActive(this);
+                    rootSys.HighlightPoints(_potentialPoints);
+                    _roundTracker.RegisterMove();
+                }
+                else if (Vector2.Distance(_mousePos, _potentialPoints[1]) < .1f)
+                {
+                    _lastAngle = _lastAngle + 60;
+                    ExtendRoot();
+                    rootSys.HighlightPoints(_potentialPoints);
+                    _roundTracker.RegisterMove();
+                }
+                else if (Vector2.Distance(_mousePos, _potentialPoints[2]) < .1f)
+                {
+                    _lastAngle = _lastAngle - 60;
+                    ExtendRoot();
+                    rootSys.HighlightPoints(_potentialPoints);
+                    _roundTracker.RegisterMove();
+                }
+            }
+            if (Input.GetMouseButton(1))
+            {
+                if (Vector2.Distance(_mousePos, _potentialPoints[1]) < .1f)
+                {
+                    _branchLastAngle = _lastAngle + 60;
+                    ExtendRoot();
+                    rootSys.CreateNewBranch(this);
+                    rootSys.HighlightPoints(_potentialPoints);
+                    _roundTracker.RegisterMove();
+                    _branching = false;
+                }
+                else if (Vector2.Distance(_mousePos, _potentialPoints[2]) < .1f)
+                {
+                    _branchLastAngle = _lastAngle - 60;
+                    ExtendRoot();
+                    rootSys.CreateNewBranch(this);
+                    rootSys.HighlightPoints(_potentialPoints);
+                    _roundTracker.RegisterMove();
+                    _branching = false;
+                }
+            }
+
+        }
+
+       
+
+        if (_selected && !Input.GetMouseButton(0) && !_branching)
         {
 			_selected = false;
             rootSys.HideHighlights();
+            this.OnRootDeselected();
         }
 	}
 
-	void OnMouseDown()
-	{
-		_selected = true;
-		GetPotentialPoints ();
-        rootSys.HighlightPoints(_potentialPoints);
+	void OnMouseOver()
+	{ 
+        if (Input.GetMouseButton(0))
+        {
+            _selected = true;
+            GetPotentialPoints();
+            rootSys.HighlightPoints(_potentialPoints);
+            this.OnRootSelected();
+        }
+        else if (Input.GetMouseButton(1))
+        {
+            _selected = true;
+            GetPotentialPoints();
+            rootSys.HighlightPoints(_potentialPoints);
+            this.OnRootSelected();
+            _branching = true;
+        }
 	}
 
-	public void SetRootPoint( Vector3 point )
+    private void OnMouseUp()
+    {
+        this.OnRootDeselected();
+    }
+
+    public void SetRootPoint( Vector3 point )
     {
 		
         _lr.positionCount = 1;

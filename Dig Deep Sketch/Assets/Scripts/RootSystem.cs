@@ -69,29 +69,8 @@ public class RootSystem : MonoBehaviour {
                 {
                     if (branch && _selectedPoint != _selectedBranchPosition)
                     {
-                        Vector3[] oldRootPath = _roots[i].GetLRPositions();
-                        float _lastOldRootAngle = _roots[i]._lastAngle;
-                        RootPath firstRootBranch = GameObject.Instantiate(Root);
-                        RootPath secondRootBranch = GameObject.Instantiate(Root);
-                        firstRootBranch.SetRootPoint(Vector3.zero);
-                        secondRootBranch.SetRootPoint(Vector3.zero);
-                        firstRootBranch.AddAllPoints(oldRootPath, _lastOldRootAngle);
-                        secondRootBranch.AddAllPoints(oldRootPath, _lastOldRootAngle);
-
-                        Vector3[] firstRootPath = firstRootBranch.GetLRPositions();
-                        Vector3[] secondRootPath = firstRootBranch.GetLRPositions();
-
-                        firstRootBranch.AddPotentialPoint(_selectedPoint);
-                        secondRootBranch.AddPotentialPoint(_selectedBranchPosition);
-
-                        firstRootPath = firstRootBranch.GetLRPositions();
-                        secondRootPath = firstRootBranch.GetLRPositions();
- 
-
-                        _roots[i] = firstRootBranch;
-                        _roots.Add(secondRootBranch);
-
-                        branch = false;
+                        CreateNewBranch(_roots[i]);
+                        _roots[i].ExtendRoot();
                     }
                     else
                     {
@@ -147,7 +126,9 @@ public class RootSystem : MonoBehaviour {
             HighlightSelectedBranchPoint(_roots[_selectedRoot].GetPotentialPoints());
         }
 	}
-
+     /// <summary>
+     /// Hide the highlight sprites associated with the this object
+     /// </summary>
     public void HideHighlights()
     {
         foreach ( SpriteRenderer h in _highlights )
@@ -156,6 +137,9 @@ public class RootSystem : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Show all highlight sprite positions associated with the this object
+    /// </summary>
     public void HighlightPoints( Vector3[] points )
     {
         HideHighlights();
@@ -166,6 +150,9 @@ public class RootSystem : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Show the selected highlight sprites associated with the this object
+    /// </summary>
     private void HighlightSelectedPoint( Vector3[] points )
     {
         HideHighlights();
@@ -173,11 +160,32 @@ public class RootSystem : MonoBehaviour {
         _highlights[0].enabled = true;
     }
 
+    /// <summary>
+    /// Show the selected branch highlight sprites associated with the this object
+    /// </summary>
     private void HighlightSelectedBranchPoint(Vector3[] points)
     {
 
         _branchHighlight.transform.position = points[_selectedPoint];
         _branchHighlight.enabled = true;
+    }
+
+
+    public void CreateNewBranch(RootPath chosenRoot)
+    {
+        Vector3[] oldRootPath = chosenRoot.GetLRPositions();
+        float branchAngle = chosenRoot._branchLastAngle;
+        RootPath newBranch = GameObject.Instantiate(Root);
+        newBranch.SetRootPoint(Vector3.zero);
+        newBranch.AddAllPoints(oldRootPath, branchAngle);
+
+        newBranch.AddPotentialPoint(_selectedBranchPosition);
+
+        _roots.Add(newBranch);
+
+        newBranch.rootSys = this;
+
+        branch = false;
     }
 
     public void MarkRootActive( RootPath root )
