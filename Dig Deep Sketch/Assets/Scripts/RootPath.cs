@@ -150,8 +150,10 @@ public class RootPath : MonoBehaviour {
         List<Vector3> clearPaths = new List<Vector3>();
         for (int i = 1; i < _potentialPoints.Length; i++)
         {
-            if (CheckForObstacles(_potentialPoints[i]).collider == null)
+            if ( CheckForObstacles(_potentialPoints[i]).collider == null )
+            {
                 clearPaths.Add(_potentialPoints[i]);
+            }
         }
 
         if (clearPaths.Count > 0)
@@ -194,7 +196,8 @@ public class RootPath : MonoBehaviour {
     public void AddPointAtAngle(float degrees)
     {
         RaycastHit2D collision = CheckForObstacles(degrees);
-        if (collision.collider != null)
+        if ( ( collision.collider != null) && 
+            ( _endPoint.y != 0 ) )
         {
             BendRoot();
         }
