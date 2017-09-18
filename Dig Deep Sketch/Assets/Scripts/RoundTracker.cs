@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine.Events;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RoundTracker : MonoBehaviour {
 
     public UnityEvent EndRound;
+    public Image[] actionIcons;
     public int currMovesPerRound;
     private int movesPlayed;
     private int currRound;
@@ -19,6 +21,7 @@ public class RoundTracker : MonoBehaviour {
 
     public void RegisterMove()
     {
+        actionIcons[movesPlayed].color = new Color(actionIcons[movesPlayed].color.r, actionIcons[movesPlayed].color.g, actionIcons[movesPlayed].color.b, actionIcons[movesPlayed].color.a / 2);
         movesPlayed++;
         if (movesPlayed >= currMovesPerRound)
         {
@@ -28,6 +31,14 @@ public class RoundTracker : MonoBehaviour {
 
     private void StartNextRound()
     {
+        for (; movesPlayed >= 0; movesPlayed--)
+        {
+            if (movesPlayed < currMovesPerRound)
+            {
+                actionIcons[movesPlayed].color = new Color(actionIcons[movesPlayed].color.r, actionIcons[movesPlayed].color.g, actionIcons[movesPlayed].color.b, actionIcons[movesPlayed].color.a * 2);
+            }
+        }
+
         movesPlayed = 0;
         currRound++;
         EndRound.Invoke();
