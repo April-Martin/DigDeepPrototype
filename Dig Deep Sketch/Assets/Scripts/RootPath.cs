@@ -214,7 +214,13 @@ public class RootPath : MonoBehaviour {
             _potentialPoints[0] = GetPointAtAngle(degrees);
             _potentialPoints[1] = GetPointAtAngle((degrees + 60) % 360);
             _potentialPoints[2] = GetPointAtAngle((degrees - 60) % 360);
+
+            if (Physics2D.OverlapPoint(newPoint, LayerMask.GetMask("Resources")) != null)
+            {
+                Debug.Log("Aha! I hit a resource!");
+            }
         }
+
     }
 
     private void AddPoint(Vector3 newPoint)
