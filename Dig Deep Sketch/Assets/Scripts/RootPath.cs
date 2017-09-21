@@ -43,21 +43,21 @@ public class RootPath : MonoBehaviour {
                     ExtendRoot();
                     rootSys.MarkRootActive(this);
                     rootSys.HighlightPoints(_potentialPoints);
-                    _roundTracker.RegisterMove();
+                    _roundTracker.RegisterMove(1);
                 }
                 else if (Vector2.Distance(_mousePos, _potentialPoints[1]) < .1f)
                 {
                     _lastAngle = _lastAngle + 60;
                     ExtendRoot();
                     rootSys.HighlightPoints(_potentialPoints);
-                    _roundTracker.RegisterMove();
+                    _roundTracker.RegisterMove(1);
                 }
                 else if (Vector2.Distance(_mousePos, _potentialPoints[2]) < .1f)
                 {
                     _lastAngle = _lastAngle - 60;
                     ExtendRoot();
                     rootSys.HighlightPoints(_potentialPoints);
-                    _roundTracker.RegisterMove();
+                    _roundTracker.RegisterMove(1);
                 }
             }
             if (Input.GetMouseButton(1))
@@ -68,7 +68,7 @@ public class RootPath : MonoBehaviour {
                     rootSys.CreateNewBranch(this);
                     ExtendRoot();
                     rootSys.HighlightPoints(_potentialPoints);
-                    _roundTracker.RegisterMove();
+                    _roundTracker.RegisterMove(2);
                     _branching = false;
                 }
                 else if (Vector2.Distance(_mousePos, _potentialPoints[2]) < .1f)
@@ -77,7 +77,7 @@ public class RootPath : MonoBehaviour {
                     rootSys.CreateNewBranch(this);
                     ExtendRoot();
                     rootSys.HighlightPoints(_potentialPoints);
-                    _roundTracker.RegisterMove();
+                    _roundTracker.RegisterMove(2);
                     _branching = false;
                 }
             }
