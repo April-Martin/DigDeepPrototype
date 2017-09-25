@@ -38,21 +38,21 @@ public class RootPath : MonoBehaviour {
             if (Input.GetMouseButton(0))
             {
 
-                if (Vector2.Distance(_mousePos, _potentialPoints[0]) < .1f)
+                if (Vector2.Distance(_mousePos, _potentialPoints[0]) < .2f)
                 {
                     ExtendRoot();
                     rootSys.MarkRootActive(this);
                     rootSys.HighlightPoints(_potentialPoints);
                     _roundTracker.RegisterMove(1);
                 }
-                else if (Vector2.Distance(_mousePos, _potentialPoints[1]) < .1f)
+                else if (Vector2.Distance(_mousePos, _potentialPoints[1]) < .2f)
                 {
                     _lastAngle = _lastAngle + 60;
                     ExtendRoot();
                     rootSys.HighlightPoints(_potentialPoints);
                     _roundTracker.RegisterMove(1);
                 }
-                else if (Vector2.Distance(_mousePos, _potentialPoints[2]) < .1f)
+                else if (Vector2.Distance(_mousePos, _potentialPoints[2]) < .2f)
                 {
                     _lastAngle = _lastAngle - 60;
                     ExtendRoot();
@@ -62,7 +62,7 @@ public class RootPath : MonoBehaviour {
             }
             if (Input.GetMouseButton(1))
             {
-                if (Vector2.Distance(_mousePos, _potentialPoints[1]) < .1f)
+                if (Vector2.Distance(_mousePos, _potentialPoints[1]) < .2f)
                 {
                     _branchLastAngle = _lastAngle + 60;
                     rootSys.CreateNewBranch(this);
@@ -71,7 +71,7 @@ public class RootPath : MonoBehaviour {
                     _roundTracker.RegisterMove(2);
                     _branching = false;
                 }
-                else if (Vector2.Distance(_mousePos, _potentialPoints[2]) < .1f)
+                else if (Vector2.Distance(_mousePos, _potentialPoints[2]) < .2f)
                 {
                     _branchLastAngle = _lastAngle - 60;
                     rootSys.CreateNewBranch(this);
