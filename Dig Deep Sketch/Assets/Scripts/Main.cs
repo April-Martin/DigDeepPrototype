@@ -7,6 +7,7 @@ public class Main : MonoBehaviour
 {
 
     public GameObject dotPrefab;
+    public Sprite resourceImg;
 
     // Use this for initialization
     void Start()
@@ -42,12 +43,12 @@ public class Main : MonoBehaviour
                 if (Physics2D.OverlapPoint(posA, LayerMask.GetMask("Resources")) != null)
                 {
                     SpriteRenderer dotA = Instantiate(dotPrefab, posA, Quaternion.identity).GetComponent<SpriteRenderer>();
-                    dotA.color = new Color(.8f, .4f, .4f);
+                    dotA.sprite = resourceImg;
                 }
                 if (Physics2D.OverlapPoint(posB, LayerMask.GetMask("Resources")) != null)
                 {
                     SpriteRenderer dotB = Instantiate(dotPrefab, posB, Quaternion.identity).GetComponent<SpriteRenderer>();
-                    dotB.color = new Color(.8f, .4f, .4f);
+                    dotB.sprite = resourceImg;
                 }
             }
         }
