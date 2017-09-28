@@ -11,4 +11,6 @@ public class GameConstants {
     public static float DOT_DELTA_Y = UNIT_LENGTH * Mathf.Sqrt(3) / 2;
     public static int BASE_MOVES_PER_ROUND = 3;
     public static int ROUNDS_PER_GAME = 50;
+
+    public enum Resources { WATER, GOOD, BAD };
 }
