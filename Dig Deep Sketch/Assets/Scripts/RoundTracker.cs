@@ -11,6 +11,7 @@ public class RoundTracker : MonoBehaviour {
     public GameObject TreeStandin;
     public int currMovesPerRound;
     public float speed;
+
     private int movesPlayed;
     private int currRound;
     private Vector3 originalTreePos;
@@ -61,5 +62,10 @@ public class RoundTracker : MonoBehaviour {
         movesPlayed = 0;
         currRound++;
         EndRound.Invoke();
+    }
+
+    public void SetBonusMoves( int bonus )
+    {
+        currMovesPerRound = GameConstants.BASE_MOVES_PER_ROUND + bonus;
     }
 }

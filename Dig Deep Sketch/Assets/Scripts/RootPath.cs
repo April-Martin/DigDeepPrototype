@@ -23,6 +23,7 @@ public class RootPath : MonoBehaviour {
         _cc = gameObject.AddComponent<CircleCollider2D>();
         _cc.radius = .2f;
         _lr = GetComponent<LineRenderer>();
+        _lr.sortingOrder = 10;
         _lr.startWidth = .2f;
         _potentialPoints = new Vector3[3];
 
@@ -215,9 +216,11 @@ public class RootPath : MonoBehaviour {
             _potentialPoints[1] = GetPointAtAngle((degrees + 60) % 360);
             _potentialPoints[2] = GetPointAtAngle((degrees - 60) % 360);
 
-            if (Physics2D.OverlapPoint(newPoint, LayerMask.GetMask("Resources")) != null)
+            Collider2D resource = Physics2D.OverlapPoint(newPoint, LayerMask.GetMask("Resources"));
+            if (resource != null)
             {
                 Debug.Log("Aha! I hit a resource!");
+                Debug.Log("Type = " + resource.GetComponent<Resource>().ResourceType);
             }
         }
 

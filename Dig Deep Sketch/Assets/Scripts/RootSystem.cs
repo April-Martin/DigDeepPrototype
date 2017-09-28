@@ -193,7 +193,7 @@ public class RootSystem : MonoBehaviour {
         _activeRoots.Add(root);
     }
     
-    public void GrowInactiveRoots()
+    private void GrowInactiveRoots()
     {
         Debug.Log("Hi!");
         foreach ( RootPath root in _roots )
@@ -202,5 +202,26 @@ public class RootSystem : MonoBehaviour {
                 root.ExtendRoot();
         }
         _activeRoots.Clear();
+    }
+
+    public void EndTurn()
+    {
+        GrowInactiveRoots();
+
+        int totalActionBonus = 0;
+        int totalHeightBonus = 0;
+
+        // Count up resources
+        foreach ( RootPath r in _roots )
+        {
+            Collider2D resource = Physics2D.OverlapPoint(r._endPoint, LayerMask.GetMask("Resources"));
+            if ( resource != null )
+            {
+                totalActionBonus += resource.GetComponent<Resource>().ActionBonus;
+                totalHeightBonus += resource.GetComponent<Resource>().HeightBonus;
+            }
+        }
+
+        GetComponent<RoundTracker>().SetBonusMoves(totalActionBonus);
     }
 }

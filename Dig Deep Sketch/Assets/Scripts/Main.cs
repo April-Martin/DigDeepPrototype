@@ -7,7 +7,6 @@ public class Main : MonoBehaviour
 {
 
     public GameObject dotPrefab;
-    public Sprite resourceImg;
 
     // Use this for initialization
     void Start()
