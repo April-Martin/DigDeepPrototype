@@ -138,6 +138,7 @@ public class RoundTracker : MonoBehaviour {
         int iconsToDelete = actionIcons.Count - currMovesPerRound;
         for (int i = 0; i < iconsToDelete; i++)
         {
+            actionIcons[actionIcons.Count - 1].transform.SetParent(null);
             GameObject.Destroy(actionIcons[actionIcons.Count - 1]);
             actionIcons.RemoveAt(actionIcons.Count - 1);
         }
