@@ -24,8 +24,11 @@ public class Main : MonoBehaviour
                 Vector3 posA = new Vector3(x * GameConstants.DOT_DELTA_X, -y * GameConstants.DOT_DELTA_Y);
                 Vector3 posB = new Vector3((x + .5f) * GameConstants.DOT_DELTA_X, -(y + 1) * GameConstants.DOT_DELTA_Y);
 
-                Instantiate(dotPrefab, posA, Quaternion.identity);
-                Instantiate(dotPrefab, posB, Quaternion.identity);
+                SpriteRenderer dot = Instantiate(dotPrefab, posA, Quaternion.identity).GetComponent<SpriteRenderer>();
+                dot.sortingOrder = -2;
+
+                dot = Instantiate(dotPrefab, posB, Quaternion.identity).GetComponent<SpriteRenderer>();
+                dot.sortingOrder = -2;
             }
         }
     }
@@ -46,14 +49,14 @@ public class Main : MonoBehaviour
                 {
                     SpriteRenderer dotA = Instantiate(dotPrefab, posA, Quaternion.identity).GetComponent<SpriteRenderer>();
                     dotA.sprite = resource.GetComponent<Resource>().TileSprite;
-                    dotA.sortingOrder = 1;
+                    dotA.sortingOrder = -1;
                 }
                 resource = Physics2D.OverlapPoint(posB, LayerMask.GetMask("Resources"));
                 if (resource != null)
                 {
                     SpriteRenderer dotB = Instantiate(dotPrefab, posB, Quaternion.identity).GetComponent<SpriteRenderer>();
                     dotB.sprite = resource.GetComponent<Resource>().TileSprite;
-                    dotB.sortingOrder = 1;
+                    dotB.sortingOrder = -1;
                 }
             }
         }
