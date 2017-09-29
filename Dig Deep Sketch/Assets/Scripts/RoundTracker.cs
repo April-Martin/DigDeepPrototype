@@ -125,21 +125,23 @@ public class RoundTracker : MonoBehaviour {
         endTreeScale += HeightBonus;
         canGrow = true;
 
-        for (int i = 0; i < actionIcons.Count; i++)
+        for (int i = 0; i < currMovesPerRound; i++)
         {
-            actionIcons[i].color = new Color(actionIcons[i].color.r, actionIcons[i].color.g, actionIcons[i].color.b, actionIcons[i].color.a * 2);
+            if ( CreateNewAction && i >= actionIcons.Count)
+                CreateNewActionIcon();
+            else
+                actionIcons[i].color = new Color(actionIcons[i].color.r, actionIcons[i].color.g, actionIcons[i].color.b, actionIcons[i].color.a * 2);
+
             yield return new WaitForSeconds(waitTime);
         }
 
-        if (CreateNewAction)
+        int iconsToDelete = actionIcons.Count - currMovesPerRound;
+        for (int i = 0; i < iconsToDelete; i++)
         {
-            for (int i = 0; i < ActionBonus; i++)
-            {
-                CreateNewActionIcon();
-
-            }
+            GameObject.Destroy(actionIcons[actionIcons.Count - 1]);
+            actionIcons.RemoveAt(actionIcons.Count - 1);
         }
 
-        movesLeft = currMovesPerRound - 1;
+            movesLeft = currMovesPerRound - 1;
     }
 }
