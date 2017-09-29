@@ -36,7 +36,7 @@ public class RootPath : MonoBehaviour {
         {
             Vector3 _mousePos = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y, 0);
 
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0) && _roundTracker.MovesLeft > 0)
             {
 
                 if (Vector2.Distance(_mousePos, _potentialPoints[0]) < .2f)
@@ -61,7 +61,7 @@ public class RootPath : MonoBehaviour {
                     _roundTracker.RegisterMove(1);
                 }
             }
-            if (Input.GetMouseButton(1))
+            if (Input.GetMouseButton(1) && _roundTracker.MovesLeft > 0)
             {
                 if (Vector2.Distance(_mousePos, _potentialPoints[1]) < .2f)
                 {

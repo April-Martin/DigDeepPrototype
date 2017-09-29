@@ -193,9 +193,11 @@ public class RootSystem : MonoBehaviour {
         _activeRoots.Add(root);
     }
     
+    /// <summary>
+    /// Will go through and extend roots that were not interacted with.
+    /// </summary>
     private void GrowInactiveRoots()
     {
-        Debug.Log("Hi!");
         foreach ( RootPath root in _roots )
         {
             if ( !_activeRoots.Contains ( root) )
@@ -222,6 +224,6 @@ public class RootSystem : MonoBehaviour {
             }
         }
 
-        GetComponent<RoundTracker>().SetBonusMoves(totalActionBonus);
+        GetComponent<RoundTracker>().StartNextRound(totalActionBonus, totalHeightBonus);
     }
 }
