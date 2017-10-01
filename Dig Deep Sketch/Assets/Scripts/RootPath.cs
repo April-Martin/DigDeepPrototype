@@ -32,6 +32,11 @@ public class RootPath : MonoBehaviour {
 
 	void Update()
 	{
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            Debug.Log("Breaking");
+        }
+
         if (_selected)
         {
             Vector3 _mousePos = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y, 0);
@@ -50,6 +55,7 @@ public class RootPath : MonoBehaviour {
                 {
                     _lastAngle = _lastAngle + 60;
                     ExtendRoot();
+                    rootSys.MarkRootActive(this);
                     rootSys.HighlightPoints(_potentialPoints);
                     _roundTracker.RegisterMove(1);
                 }
@@ -57,6 +63,7 @@ public class RootPath : MonoBehaviour {
                 {
                     _lastAngle = _lastAngle - 60;
                     ExtendRoot();
+                    rootSys.MarkRootActive(this);
                     rootSys.HighlightPoints(_potentialPoints);
                     _roundTracker.RegisterMove(1);
                 }
@@ -68,6 +75,7 @@ public class RootPath : MonoBehaviour {
                     _branchLastAngle = _lastAngle + 60;
                     rootSys.CreateNewBranch(this);
                     ExtendRoot();
+                    rootSys.MarkRootActive(this);
                     rootSys.HighlightPoints(_potentialPoints);
                     _roundTracker.RegisterMove(2);
                     _branching = false;
@@ -77,6 +85,7 @@ public class RootPath : MonoBehaviour {
                     _branchLastAngle = _lastAngle - 60;
                     rootSys.CreateNewBranch(this);
                     ExtendRoot();
+                    rootSys.MarkRootActive(this);
                     rootSys.HighlightPoints(_potentialPoints);
                     _roundTracker.RegisterMove(2);
                     _branching = false;
