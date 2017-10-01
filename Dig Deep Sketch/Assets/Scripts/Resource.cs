@@ -10,11 +10,11 @@ public class Resource : MonoBehaviour {
     private int actionBonus;
     public int ActionBonus { get{ return actionBonus; } }
 
-    private float heightBonus;
+    private float heightBonus = .5f;
     public float HeightBonus{ get{ return heightBonus; } }
 
-    public int defaultActionBonusValue = 1;
-    public float defaultHeightBonusValue = 0.1f;
+    private int defaultActionBonusValue = 1;
+    private float defaultHeightBonusValue = 0.5f;
 
     private Sprite tileSprite;
     public Sprite TileSprite { get { return tileSprite; } }

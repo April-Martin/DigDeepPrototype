@@ -62,4 +62,16 @@ public class Main : MonoBehaviour
         }
 
     }
+
+    public void EndGame( bool wonGame )
+    {
+        if (wonGame)
+        {
+            Debug.Log("YAAAAAAY");
+        }
+        else
+        {
+            Debug.Log("BOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+        }
+    }
 }

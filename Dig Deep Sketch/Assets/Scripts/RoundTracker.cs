@@ -10,6 +10,7 @@ public class RoundTracker : MonoBehaviour {
     public UnityEvent EndRound;
     public GameObject ActionBar;
     public GameObject ActionIcon;
+    public Text WinStatus;
     public Text RoundCounter;
     public GameObject TreeStandin;
     public int currMovesPerRound;
@@ -27,8 +28,9 @@ public class RoundTracker : MonoBehaviour {
     private float endTreeScale;
     private float scalingFactor = 0.01f;
     private bool canGrow = false;
-    public float maxTreeHeight;
-    public float minTreeHeight;
+    public float maxTreeHeight = 3;
+    public float minTreeHeight = 1;
+    public float targetTreeHeight;
 
 	// Use this for initialization
 	void Start () {
@@ -118,6 +120,24 @@ public class RoundTracker : MonoBehaviour {
         StartCoroutine(GrowTree(actionBonus, createNewAction, finalHeightBonus));
     }
 
+    private void CheckWin( )
+    {
+        if ( endTreeScale >= targetTreeHeight )
+        {
+            WinStatus.text = "SUCCESS";
+            WinStatus.color = new Color32(0x7B, 0xF6, 0x8B, 0xff);
+            GetComponent<Main>().EndGame(true);
+            WinStatus.enabled = true;
+        }
+        else if ( currRound > Rounds )
+        {
+            WinStatus.text = "FAILURE";
+            GetComponent<Main>().EndGame(false);
+            WinStatus.color = new Color(1f, 0.3f, .3f);
+            WinStatus.enabled = true;
+        }
+    }
+
     /// <summary>
     /// Creates a new action Icon and adds it to the actionIcons list.E
     /// </summary>
@@ -129,12 +149,7 @@ public class RoundTracker : MonoBehaviour {
 
     private IEnumerator GrowTree(float ActionBonus, bool CreateNewAction, float HeightBonus)
     {
-        if (endTreeScale + HeightBonus >= maxTreeHeight)
-        {
-            endTreeScale = maxTreeHeight; 
-            // TODO: Win Game?
-        }
-        else if (endTreeScale + HeightBonus <= minTreeHeight){
+        if (endTreeScale + HeightBonus <= minTreeHeight){
             endTreeScale = minTreeHeight;
         }
         else{
@@ -160,6 +175,7 @@ public class RoundTracker : MonoBehaviour {
             actionIcons.RemoveAt(actionIcons.Count - 1);
         }
 
+        CheckWin();
         movesLeft = currMovesPerRound - 1;
     }
 }
