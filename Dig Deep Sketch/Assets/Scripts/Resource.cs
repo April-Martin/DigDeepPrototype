@@ -10,8 +10,11 @@ public class Resource : MonoBehaviour {
     private int actionBonus;
     public int ActionBonus { get{ return actionBonus; } }
 
-    private int heightBonus;
-    public int HeightBonus{ get{ return heightBonus; } }
+    private float heightBonus;
+    public float HeightBonus{ get{ return heightBonus; } }
+
+    public int defaultActionBonusValue = 1;
+    public float defaultHeightBonusValue = 0.1f;
 
     private Sprite tileSprite;
     public Sprite TileSprite { get { return tileSprite; } }
@@ -20,20 +23,20 @@ public class Resource : MonoBehaviour {
 	void Start () {
         if ( ResourceType == GameConstants.Resources.WATER )
         {
-            actionBonus = 1;
-            heightBonus = 1;
+            actionBonus = defaultActionBonusValue;
+            heightBonus = defaultHeightBonusValue;
             tileSprite = ResourceTiles[0];
         }
 		else if ( ResourceType == GameConstants.Resources.BAD )
         {
-            actionBonus = -1;
-            heightBonus = -1;
+            actionBonus = -defaultActionBonusValue;
+            heightBonus = -defaultHeightBonusValue;
             tileSprite = ResourceTiles[1];
         }
         else if ( ResourceType == GameConstants.Resources.GOOD )
         {
-            actionBonus = 1;
-            heightBonus = 1;
+            actionBonus = defaultActionBonusValue;
+            heightBonus = defaultHeightBonusValue;
             tileSprite = ResourceTiles[2];
         }
 	}

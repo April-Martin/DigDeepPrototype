@@ -211,7 +211,7 @@ public class RootSystem : MonoBehaviour {
         GrowInactiveRoots();
 
         int totalActionBonus = 0;
-        int totalHeightBonus = 0;
+        float totalHeightBonus = 0;
 
         // Count up resources
         foreach ( RootPath r in _roots )

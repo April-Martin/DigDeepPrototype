@@ -25,6 +25,8 @@ public class RoundTracker : MonoBehaviour {
     private float endTreeScale;
     private float scalingFactor = 0.01f;
     private bool canGrow = false;
+    public float maxTreeHeight;
+    public float minTreeHeight;
 
 	// Use this for initialization
 	void Start () {
@@ -97,7 +99,7 @@ public class RoundTracker : MonoBehaviour {
         EndRound.Invoke();
     }
 
-    public void StartNextRound(int actionBonus, int heightBonus)
+    public void StartNextRound(int actionBonus, float heightBonus)
     {
         bool createNewAction = false;
         if (currMovesPerRound >= 3 && currMovesPerRound < 5)
@@ -122,7 +124,17 @@ public class RoundTracker : MonoBehaviour {
 
     private IEnumerator GrowTree(float ActionBonus, bool CreateNewAction, float HeightBonus)
     {
-        endTreeScale += HeightBonus;
+        if (endTreeScale + HeightBonus >= maxTreeHeight)
+        {
+            endTreeScale = maxTreeHeight; 
+            // TODO: Win Game?
+        }
+        else if (endTreeScale + HeightBonus <= minTreeHeight){
+            endTreeScale = minTreeHeight;
+        }
+        else{
+            endTreeScale += HeightBonus;
+        }
         canGrow = true;
 
         for (int i = 0; i < currMovesPerRound; i++)
@@ -143,6 +155,6 @@ public class RoundTracker : MonoBehaviour {
             actionIcons.RemoveAt(actionIcons.Count - 1);
         }
 
-            movesLeft = currMovesPerRound - 1;
+        movesLeft = currMovesPerRound - 1;
     }
 }
