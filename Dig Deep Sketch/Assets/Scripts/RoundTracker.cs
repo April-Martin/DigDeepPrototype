@@ -10,8 +10,10 @@ public class RoundTracker : MonoBehaviour {
     public UnityEvent EndRound;
     public GameObject ActionBar;
     public GameObject ActionIcon;
+    public Text RoundCounter;
     public GameObject TreeStandin;
     public int currMovesPerRound;
+    public int Rounds;
     public float speed;
     public float waitTime;
 
@@ -37,6 +39,8 @@ public class RoundTracker : MonoBehaviour {
         originalTreeScale = TreeStandin.transform.localScale.y;
         endTreeScale = originalTreeScale;
         actionIcons = new List<Image>(3);
+
+        RoundCounter.text = (Rounds - currRound + 1).ToString();
 
         for (int i = 0; i < currMovesPerRound; i++)
         {
@@ -109,6 +113,7 @@ public class RoundTracker : MonoBehaviour {
             createNewAction = true;
         }
 
+        RoundCounter.text = (Rounds - currRound + 1).ToString();
         float finalHeightBonus = heightBonus != 0 ? heightBonus : -scalingFactor;
         StartCoroutine(GrowTree(actionBonus, createNewAction, finalHeightBonus));
     }
