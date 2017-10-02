@@ -22,9 +22,13 @@ public class RootPath : MonoBehaviour {
         _roundTracker = GameObject.Find("MainGame").GetComponent<RoundTracker>();
         _cc = gameObject.AddComponent<CircleCollider2D>();
         _cc.radius = .2f;
+
         _lr = GetComponent<LineRenderer>();
         _lr.sortingOrder = 10;
-        _lr.startWidth = .2f;
+        _lr.startWidth = .175f;
+        _lr.startColor = new Color(.48f, .2f, 0);
+        _lr.endColor = new Color(.25f, .15f, 0f);
+
         _potentialPoints = new Vector3[3];
 
         
@@ -195,7 +199,9 @@ public class RootPath : MonoBehaviour {
 
     public void OnRootDeselected()
     {
-        _lr.startColor = _lr.endColor = new Color(1, 1, 1);
+        _lr.startColor = new Color(.48f, .2f, 0);
+
+        _lr.endColor = new Color(.25f, .15f, 0f);
     }
 
     public Vector3[] GetPotentialPoints()

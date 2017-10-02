@@ -5,8 +5,8 @@ using UnityEngine;
 public class GameConstants {
 
     public static float UNIT_LENGTH = .5f;
-    public static int DOTS_WIDE = 40;
-    public static int DOTS_HIGH = 15;
+    public static int DOTS_WIDE = 50;
+    public static int DOTS_HIGH = 20;
     public static float DOT_DELTA_X = UNIT_LENGTH;
     public static float DOT_DELTA_Y = UNIT_LENGTH * Mathf.Sqrt(3) / 2;
     public static int BASE_MOVES_PER_ROUND = 3;

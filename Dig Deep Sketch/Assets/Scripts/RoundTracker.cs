@@ -131,15 +131,16 @@ public class RoundTracker : MonoBehaviour {
         {
             WinStatus.text = "SUCCESS";
             WinStatus.color = new Color32(0x7B, 0xF6, 0x8B, 0xff);
-            GetComponent<Main>().EndGame(true);
-            WinStatus.enabled = true;
+            WinStatus.gameObject.SetActive(true);
+            WinStatus.transform.parent.gameObject.SetActive(true);
         }
         else if ( currRound > Rounds )
         {
             WinStatus.text = "FAILURE";
-            GetComponent<Main>().EndGame(false);
             WinStatus.color = new Color(1f, 0.3f, .3f);
-            WinStatus.enabled = true;
+            WinStatus.gameObject.SetActive(true);
+            WinStatus.transform.parent.gameObject.SetActive(true);
+
         }
     }
 
