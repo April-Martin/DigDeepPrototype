@@ -14,6 +14,7 @@ public class RoundTracker : MonoBehaviour {
     public Text RoundCounter;
     public GameObject TreeStandin;
     public int currMovesPerRound;
+    public GameObject TargetMarker;
     public int Rounds;
     public float speed;
     public float waitTime;
@@ -43,6 +44,10 @@ public class RoundTracker : MonoBehaviour {
         actionIcons = new List<Image>(3);
 
         RoundCounter.text = (Rounds - currRound + 1).ToString();
+
+        float markerHeight = (originalTreePos.y + TreeStandin.GetComponent<SpriteRenderer>().bounds.size.y * targetTreeHeight);
+        Transform marker = GameObject.Instantiate(TargetMarker).transform;
+        marker.position = new Vector2(originalTreePos.x, markerHeight);
 
         for (int i = 0; i < currMovesPerRound; i++)
         {
