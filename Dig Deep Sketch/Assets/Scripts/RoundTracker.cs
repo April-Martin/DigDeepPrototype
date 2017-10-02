@@ -18,6 +18,11 @@ public class RoundTracker : MonoBehaviour {
     public int Rounds;
     public float speed;
     public float waitTime;
+    public float defaultGrowth;
+
+    public float maxTreeHeight = 3;
+    public float minTreeHeight = 1;
+    public float targetTreeHeight;
 
     public int MovesLeft { get { return movesLeft + 1; } }
 
@@ -29,9 +34,6 @@ public class RoundTracker : MonoBehaviour {
     private float endTreeScale;
     private float scalingFactor = 0.01f;
     private bool canGrow = false;
-    public float maxTreeHeight = 3;
-    public float minTreeHeight = 1;
-    public float targetTreeHeight;
 
 	// Use this for initialization
 	void Start () {
@@ -121,7 +123,8 @@ public class RoundTracker : MonoBehaviour {
         }
 
         RoundCounter.text = (Rounds - currRound + 1).ToString();
-        float finalHeightBonus = heightBonus != 0 ? heightBonus : -scalingFactor;
+        //float finalHeightBonus = heightBonus != 0 ? heightBonus : -scalingFactor;
+        float finalHeightBonus = heightBonus + defaultGrowth;
         StartCoroutine(GrowTree(actionBonus, createNewAction, finalHeightBonus));
     }
 
