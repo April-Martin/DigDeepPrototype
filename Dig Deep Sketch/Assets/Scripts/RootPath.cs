@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
+
 public class RootPath : MonoBehaviour {
     public RootSystem rootSys { get; set; }
     private RoundTracker _roundTracker;
@@ -15,6 +16,7 @@ public class RootPath : MonoBehaviour {
 
     private bool _selected;
     private Vector3[] _potentialPoints;
+    private AudioSource _src;
 
 	// Use this for initialization
     void Awake()
@@ -31,7 +33,7 @@ public class RootPath : MonoBehaviour {
 
         _potentialPoints = new Vector3[3];
 
-        
+        _src = GetComponent<AudioSource>();
     }
 
 	void Update()
@@ -211,6 +213,11 @@ public class RootPath : MonoBehaviour {
 
     public void AddPointAtAngle(float degrees)
     {
+        if (_endPoint.y != 0)
+        {
+            _src.Play();
+        }
+
         RaycastHit2D collision = CheckForObstacles(degrees);
         if ( ( collision.collider != null) && 
             ( _endPoint.y != 0 ) )

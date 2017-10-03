@@ -15,6 +15,7 @@ public class RootSystem : MonoBehaviour {
     private SpriteRenderer _branchHighlight;
     private int _selectedRoot;
     private int _selectedPoint;
+    private AudioSource _src;
 
     private bool branch;
     private int _selectedBranchPosition;
@@ -28,7 +29,7 @@ public class RootSystem : MonoBehaviour {
         _selectedRoot = 0;
         _selectedPoint = 0;
         _endNum = 2;
-        branch = false;
+        _src = GetComponent<AudioSource>();
 
         for (int i = 0; i < _endNum; i++ )
         {
@@ -203,6 +204,10 @@ public class RootSystem : MonoBehaviour {
             if ( !_activeRoots.Contains ( root) )
                 root.ExtendRoot();
         }
+
+        if (_activeRoots.Count > 0)
+            _src.Play();
+
         _activeRoots.Clear();
     }
 
